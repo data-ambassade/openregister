@@ -1,0 +1,574 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "testregister API",
+        "version": "0.0.7",
+        "description": "testregister",
+        "contact": {
+            "name": "OpenRegister Development Team",
+            "url": "https://www.openregister.app",
+            "email": "info@conduction.nl"
+        },
+        "license": {
+            "name": "EUPL-1.2",
+            "url": "https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080/apps/openregister/api",
+            "description": "OpenRegister API Server"
+        }
+    ],
+    "security": [
+        {
+            "basicAuth": []
+        },
+        {
+            "oauth2": [
+                "read",
+                "write"
+            ]
+        }
+    ],
+    "tags": [
+        {
+            "name": "testschema",
+            "description": "dit is een test schema"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "basicAuth": {
+                "type": "http",
+                "scheme": "basic",
+                "description": "Basic authentication using username and password. Not recommended for production use."
+            },
+            "oauth2": {
+                "type": "oauth2",
+                "description": "OAuth2 authentication using Nextcloud's authentication server.",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "/apps/oauth2/authorize",
+                        "tokenUrl": "/apps/oauth2/api/v1/token",
+                        "refreshUrl": "/apps/oauth2/api/v1/token",
+                        "scopes": {
+                            "read": "Read access to all resources",
+                            "write": "Write access to all resources"
+                        }
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string",
+                        "description": "Error message describing what went wrong",
+                        "example": "Object not found"
+                    },
+                    "code": {
+                        "type": "integer",
+                        "description": "HTTP status code",
+                        "example": 404
+                    }
+                },
+                "required": [
+                    "error"
+                ]
+            },
+            "PaginatedResponse": {
+                "type": "object",
+                "properties": {
+                    "results": {
+                        "type": "array",
+                        "description": "Array of result objects",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "total": {
+                        "type": "integer",
+                        "description": "Total number of items available",
+                        "example": 100
+                    },
+                    "page": {
+                        "type": "integer",
+                        "description": "Current page number",
+                        "example": 1
+                    },
+                    "pages": {
+                        "type": "integer",
+                        "description": "Total number of pages",
+                        "example": 10
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Number of items per page",
+                        "example": 20
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "description": "Number of items skipped",
+                        "example": 0
+                    }
+                }
+            },
+            "@self": {
+                "type": "object",
+                "description": "Object metadata including timestamps, ownership, and system information",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Unique identifier for the object",
+                        "example": 123
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Unique universal identifier for globally unique object identification",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "uri": {
+                        "type": "string",
+                        "description": "Uniform Resource Identifier for unique addressable location",
+                        "example": "/api/objects/123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Semantic version number to track object versions",
+                        "example": "1.0"
+                    },
+                    "register": {
+                        "type": "integer",
+                        "description": "Register identifier for object categorization/grouping",
+                        "example": 123
+                    },
+                    "schema": {
+                        "type": "integer",
+                        "description": "Schema identifier for data validation reference",
+                        "example": 123
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "Nextcloud user identifier for object ownership",
+                        "example": "user-12345"
+                    },
+                    "updated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Last modification timestamp for change tracking",
+                        "example": "2023-05-20T10:15:00Z"
+                    },
+                    "created": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Creation timestamp for lifecycle management",
+                        "example": "2023-02-15T14:30:00Z"
+                    }
+                }
+            },
+            "testschema": {
+                "type": "object",
+                "x-tags": [
+                    "testschema"
+                ],
+                "properties": {
+                    "@self": {
+                        "$ref": "#/components/schemas/@self",
+                        "readOnly": true,
+                        "description": "Object metadata including timestamps, ownership, and system information"
+                    },
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "example": "123e4567-e89b-12d3-a456-426614174000",
+                        "description": "The unique identifier for the object."
+                    },
+                    "omschrijving": {
+                        "type": "string",
+                        "format": "",
+                        "description": "",
+                        "title": "omschrijving"
+                    },
+                    "dct:test": {
+                        "type": "string",
+                        "format": "",
+                        "description": "",
+                        "title": "Test"
+                    },
+                    "titel": {
+                        "type": "string",
+                        "format": "",
+                        "description": "",
+                        "title": "titel"
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/testregister/testschema": {
+            "get": {
+                "summary": "Get all testschema objects",
+                "operationId": "getAllTestschema",
+                "tags": [
+                    "testschema"
+                ],
+                "description": "Retrieve a list of all testschema objects",
+                "parameters": [
+                    {
+                        "name": "_extend",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to extend.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "property1,property2,property3"
+                    },
+                    {
+                        "name": "_filter",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to include in the response. ",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "id,name,description"
+                    },
+                    {
+                        "name": "_unset",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to remove from the response.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "internalField1,internalField2"
+                    },
+                    {
+                        "name": "_search",
+                        "in": "query",
+                        "required": false,
+                        "description": "Full-text search query to filter objects in the collection.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "search term"
+                    },
+                    {
+                        "name": "omschrijving",
+                        "in": "query",
+                        "required": false,
+                        "description": "Filter results by omschrijving",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dct:test",
+                        "in": "query",
+                        "required": false,
+                        "description": "Filter results by dct:test",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "titel",
+                        "in": "query",
+                        "required": false,
+                        "description": "Filter results by titel",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of testschema objects with pagination metadata",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/PaginatedResponse"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/testschema"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new testschema object",
+                "operationId": "createTestschema",
+                "tags": [
+                    "testschema"
+                ],
+                "description": "Create a new testschema object with the provided data",
+                "parameters": [
+                    {
+                        "name": "_extend",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to extend.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "property1,property2,property3"
+                    },
+                    {
+                        "name": "_filter",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to include in the response. ",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "id,name,description"
+                    },
+                    {
+                        "name": "_unset",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to remove from the response.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "internalField1,internalField2"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/testschema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "testschema created successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/testschema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testregister/testschema/{id}": {
+            "get": {
+                "summary": "Get a testschema object by ID",
+                "operationId": "getTestschema",
+                "tags": [
+                    "testschema"
+                ],
+                "description": "Retrieve a specific testschema object by its unique identifier",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Unique identifier of the testschema object",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "_extend",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to extend.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "property1,property2,property3"
+                    },
+                    {
+                        "name": "_filter",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to include in the response. ",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "id,name,description"
+                    },
+                    {
+                        "name": "_unset",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to remove from the response.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "internalField1,internalField2"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "testschema found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/testschema"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "testschema not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a testschema object",
+                "operationId": "updateTestschema",
+                "tags": [
+                    "testschema"
+                ],
+                "description": "Update an existing testschema object with the provided data",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Unique identifier of the testschema object to update",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "_extend",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to extend.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "property1,property2,property3"
+                    },
+                    {
+                        "name": "_filter",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to include in the response. ",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "id,name,description"
+                    },
+                    {
+                        "name": "_unset",
+                        "in": "query",
+                        "required": false,
+                        "description": "Comma-separated list of properties to remove from the response.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "internalField1,internalField2"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/testschema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "testschema updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/testschema"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "testschema not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a testschema object",
+                "operationId": "deleteTestschema",
+                "tags": [
+                    "testschema"
+                ],
+                "description": "Delete a specific testschema object by its unique identifier",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Unique identifier of the testschema object to delete",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "testschema deleted successfully"
+                    },
+                    "404": {
+                        "description": "testschema not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
